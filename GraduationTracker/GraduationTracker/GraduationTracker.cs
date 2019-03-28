@@ -1,29 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraduationTracker
 {
-    public partial class GraduationTracker
-    {   
-        public Tuple<bool, STANDING>  HasGraduated(Diploma diploma, Student student)
+    public class GraduationTracker
+    {
+        private readonly Repository _repository;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="repository"></param>
+        public GraduationTracker(Repository repository)
+        {
+            _repository = repository;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="diploma"></param>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        public Tuple<bool, STANDING, int>  HasGraduated(Diploma diploma, Student student)
         {
             var credits = 0;
-            var average = 0;
+            var sumOfMarks = 0;
         
             for(int i = 0; i < diploma.Requirements.Length; i++)
             {
                 for(int j = 0; j < student.Courses.Length; j++)
                 {
-                    var requirement = Repository.GetRequirement(diploma.Requirements[i]);
+                    var requirement = _repository.GetRequirement(diploma.Requirements[i]);
 
                     for (int k = 0; k < requirement.Courses.Length; k++)
                     {
                         if (requirement.Courses[k] == student.Courses[j].Id)
                         {
-                            average += student.Courses[j].Mark;
+                            sumOfMarks += student.Courses[j].Mark;
                             if (student.Courses[j].Mark > requirement.MinimumMark)
                             {
                                 credits += requirement.Credits;
@@ -33,33 +44,39 @@ namespace GraduationTracker
                 }
             }
 
-            average = average / student.Courses.Length;
+            var averageMark = sumOfMarks / student.Courses.Length;
 
-            var standing = STANDING.None;
-
-            if (average < 50)
-                standing = STANDING.Remedial;
-            else if (average < 80)
-                standing = STANDING.Average;
-            else if (average < 95)
-                standing = STANDING.MagnaCumLaude;
+            return new Tuple<bool, STANDING, int>(StudentHasGraduated(averageMark), StudentStanding(averageMark), credits);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="averageMark"></param>
+        /// <returns></returns>
+        private bool StudentHasGraduated(int averageMark)
+        {
+            if (averageMark < 50)
+                return false;
             else
-                standing = STANDING.MagnaCumLaude;
+                return true;
+        }
 
-            switch (standing)
-            {
-                case STANDING.Remedial:
-                    return new Tuple<bool, STANDING>(false, standing);
-                case STANDING.Average:
-                    return new Tuple<bool, STANDING>(true, standing);
-                case STANDING.SumaCumLaude:
-                    return new Tuple<bool, STANDING>(true, standing);
-                case STANDING.MagnaCumLaude:
-                    return new Tuple<bool, STANDING>(true, standing);
-
-                default:
-                    return new Tuple<bool, STANDING>(false, standing);
-            } 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="studentAverage"></param>
+        /// <returns></returns>
+        private STANDING StudentStanding(int studentAverage )
+        {
+            //fix me: not clear what range maps to SumaCumLaude
+            if (studentAverage < 50)
+                return STANDING.Remedial;
+            else if (studentAverage < 80)
+                return STANDING.Average;
+            else if (studentAverage < 95)
+                return STANDING.MagnaCumLaude;
+            else
+                return STANDING.MagnaCumLaude;
         }
     }
 }

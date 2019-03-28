@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraduationTracker
+﻿namespace GraduationTracker
 {
     public class Repository
     {
-        public static Student GetStudent(int id)
+        public Student GetStudent(int id)
         {
             var students = GetStudents();
             Student student = null;
@@ -23,7 +17,7 @@ namespace GraduationTracker
             return student;
         }
 
-        public static Diploma GetDiploma(int id)
+        public Diploma GetDiploma(int id)
         {
             var diplomas = GetDiplomas();
             Diploma diploma = null;
@@ -39,7 +33,7 @@ namespace GraduationTracker
 
         }
 
-        public static Requirement GetRequirement(int id)
+        public Requirement GetRequirement(int id)
         {
             var requirements = GetRequirements();
             Requirement requirement = null;
@@ -55,7 +49,7 @@ namespace GraduationTracker
         }
 
 
-        private static Diploma[] GetDiplomas()
+        private Diploma[] GetDiplomas()
         {
             return new[]
             {
@@ -68,7 +62,7 @@ namespace GraduationTracker
             };
         }
 
-        public static Requirement[] GetRequirements()
+        public Requirement[] GetRequirements()
         {   
                 return new[]
                 {
@@ -78,7 +72,8 @@ namespace GraduationTracker
                     new Requirement{Id = 104, Name = "Physichal Education", MinimumMark=50, Courses = new int[]{4}, Credits=1 }
                 };
         }
-        private static Student[] GetStudents()
+
+        private Student[] GetStudents()
         {
             return new[]
             {
