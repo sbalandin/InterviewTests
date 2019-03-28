@@ -45,7 +45,7 @@ namespace GraduationTracker
             }
 
             var averageMark = sumOfMarks / student.Courses.Length;
-
+            //credits added to have ability to create unit test
             return new Tuple<bool, STANDING, int>(StudentHasGraduated(averageMark), StudentStanding(averageMark), credits);
         }
         /// <summary>

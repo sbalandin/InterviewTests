@@ -66,12 +66,6 @@ namespace GraduationTracker.Tests.Unit
 
         int[] expectedCredits = { 4, 4, 0, 0 };
 
-        //test if student has all required courses
-
-        //test if each required course has minimum mark
-
-        //test if standing matches mark average
-
         [TestMethod]
         public void TestHasGraduated()
         {
@@ -106,26 +100,6 @@ namespace GraduationTracker.Tests.Unit
                 Assert.AreEqual(actualResult, expectedResult);
             }
         }
-
-        //[TestMethod]
-        //public void TestHasCredits()
-        //{
-        //    var repository = new Repository();
-
-        //    var tracker = new GraduationTracker(repository);
-
-        //    var graduated = new List<Tuple<bool, STANDING>>();
-
-        //    foreach (var student in _students)
-        //    {
-        //        graduated.Add(tracker.HasGraduated(_diploma, student));
-        //    }
-
-
-        //    Assert.IsFalse(graduated.Any());
-
-        //}
-
 
     }
 }
